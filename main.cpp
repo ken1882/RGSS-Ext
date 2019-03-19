@@ -38,13 +38,13 @@ VALUE DLL_EXPORT SetInstance(VALUE obj, VALUE iv, VALUE val) {
 	return rgss_obj_ivar_set(obj, iv, val);
 }
 
-VALUE DLL_EXPORT GetAryIndex(VALUE ary, VALUE pos) {
-	if (!init_ok) { return -1; }
+VALUE DLL_EXPORT GetAryIndex(VALUE ary, VALUE pos){
+    if(!init_ok){return -1;}
 	return rgss_ary_at(ary, pos);
 }
 
-VALUE DLL_EXPORT CheckCollision(DWORD proj_len, VALUE projs, DWORD ppl_len, VALUE ppl) {
-	if (!init_ok) { return -1; }
+VALUE DLL_EXPORT CheckCollision(DWORD proj_len, VALUE projs, DWORD ppl_len, VALUE ppl){
+    if(!init_ok){return -1;}
     int* ppl_x  = new int[ppl_len];
     int* ppl_y  = new int[ppl_len];
     int* ppl_wx = new int[ppl_len];
@@ -83,7 +83,7 @@ VALUE DLL_EXPORT CheckCollision(DWORD proj_len, VALUE projs, DWORD ppl_len, VALU
     delete[] ppl_y;
     delete[] ppl_wx;
     delete[] ppl_hy;
-	return 0;
+    return 0;
 }
 
 extern "C" DLL_EXPORT BOOL APIENTRY DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
