@@ -1,0 +1,9 @@
+EXPORTS
+    CheckCollision @1
+    DllMain@12 @2
+    GetAryIndex @3
+    GetInstance @4
+    HelloWorld @5
+    InitOK @6
+    Initialize @7
+    SetInstance @8

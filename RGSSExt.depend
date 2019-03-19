@@ -1,0 +1,56 @@
+# depslib dependency file v1.0
+1553000789 source:f:\rmva\rgssext\main.cpp
+	"main.hpp"
+	<fstream>
+
+1552970496 f:\rmva\rgssext\main.h
+	<windows.h>
+	"ruby.h"
+	<iostream>
+	<cmath>
+	<algorithm>
+	<vector>
+	<map>
+	<queue>
+	<stack>
+	<string>
+
+1552971628 f:\rmva\rgssext\ruby.h
+	"config.h"
+	"defines.h"
+	<intrinsics.h>
+	<stdarg.h>
+	<alloca.h>
+	<limits.h>
+	<limits.h>
+
+1552999331 f:\rmva\rgssext\main.hpp
+	<windows.h>
+	"ruby.h"
+	<iostream>
+	<cmath>
+	<algorithm>
+	<vector>
+	<map>
+	<queue>
+	<stack>
+	<string>
+
+1552971424 f:\rmva\rgssext\defines.h
+	<stdio.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdlib.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<unistd.h>
+	<sys/select.h>
+	<setjmpex.h>
+
+1552971643 f:\rmva\rgssext\config.h
+
