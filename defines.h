@@ -17,139 +17,9 @@ extern "C" {
 #endif
 #endif
 
-
-/* function attributes */
-#ifndef CONSTFUNC
-# define CONSTFUNC(x) x
-#endif
-#ifndef PUREFUNC
-# define PUREFUNC(x) x
-#endif
-#define NORETURN_STYLE_NEW 1
-#ifndef NORETURN
-# define NORETURN(x) x
-#endif
-#ifndef DEPRECATED
-# define DEPRECATED(x) x
-#endif
-#ifndef DEPRECATED_BY
-# define DEPRECATED_BY(n,x) DEPRECATED(x)
-#endif
-#ifndef DEPRECATED_TYPE
-# define DEPRECATED_TYPE(mesg, decl) decl
-#endif
-#ifndef NOINLINE
-# define NOINLINE(x) x
-#endif
-#ifndef ALWAYS_INLINE
-# define ALWAYS_INLINE(x) x
-#endif
-#ifndef ERRORFUNC
-# define HAVE_ATTRIBUTE_ERRORFUNC 0
-# define ERRORFUNC(mesg, x) x
-#else
-# define HAVE_ATTRIBUTE_ERRORFUNC 1
-#endif
-#ifndef WARNINGFUNC
-# define HAVE_ATTRIBUTE_WARNINGFUNC 0
-# define WARNINGFUNC(mesg, x) x
-#else
-# define HAVE_ATTRIBUTE_WARNINGFUNC 1
-#endif
-
-#ifndef GCC_VERSION_SINCE
-# if defined(__GNUC__) && !defined(__INTEL_COMPILER) && !defined(__clang__)
-#  define GCC_VERSION_SINCE(major, minor, patchlevel) \
-    ((__GNUC__ > (major)) ||  \
-     ((__GNUC__ == (major) && \
-       ((__GNUC_MINOR__ > (minor)) || \
-        (__GNUC_MINOR__ == (minor) && __GNUC_PATCHLEVEL__ >= (patchlevel))))))
-# else
-#  define GCC_VERSION_SINCE(major, minor, patchlevel) 0
-# endif
-#endif
-#ifndef GCC_VERSION_BEFORE
-# if defined(__GNUC__) && !defined(__INTEL_COMPILER) && !defined(__clang__)
-#  define GCC_VERSION_BEFORE(major, minor, patchlevel) \
-    ((__GNUC__ < (major)) ||  \
-     ((__GNUC__ == (major) && \
-       ((__GNUC_MINOR__ < (minor)) || \
-        (__GNUC_MINOR__ == (minor) && __GNUC_PATCHLEVEL__ <= (patchlevel))))))
-# else
-#  define GCC_VERSION_BEFORE(major, minor, patchlevel) 0
-# endif
-#endif
-
-/* likely */
-#if __GNUC__ >= 3
-#define RB_LIKELY(x)   (__builtin_expect(!!(x), 1))
-#define RB_UNLIKELY(x) (__builtin_expect(!!(x), 0))
-#else /* __GNUC__ >= 3 */
-#define RB_LIKELY(x)   (x)
-#define RB_UNLIKELY(x) (x)
-#endif /* __GNUC__ >= 3 */
-
-#ifdef __GNUC__
-#define PRINTF_ARGS(decl, string_index, first_to_check) \
-  decl __attribute__((format(printf, string_index, first_to_check)))
-#else
-#define PRINTF_ARGS(decl, string_index, first_to_check) decl
-#endif
-
-#ifdef __GNUC__
-#define RB_GNUC_EXTENSION __extension__
-#define RB_GNUC_EXTENSION_BLOCK(x) __extension__ ({ x; })
-#else
-#define RB_GNUC_EXTENSION
-#define RB_GNUC_EXTENSION_BLOCK(x) (x)
-#endif
-
-/* AC_INCLUDES_DEFAULT */
-#include <stdio.h>
-#ifdef HAVE_SYS_TYPES_H
-# include <sys/types.h>
-#endif
-#ifdef HAVE_SYS_STAT_H
-# include <sys/stat.h>
-#endif
-#ifdef STDC_HEADERS
-# include <stdlib.h>
-# include <stddef.h>
-#else
-# ifdef HAVE_STDLIB_H
-#  include <stdlib.h>
-# endif
-#endif
-#ifdef HAVE_STRING_H
-# if !defined STDC_HEADERS && defined HAVE_MEMORY_H
-#  include <memory.h>
-# endif
-# include <string.h>
-#endif
-#ifdef HAVE_STRINGS_H
-# include <strings.h>
-#endif
-#ifdef HAVE_INTTYPES_H
-# include <inttypes.h>
-#endif
-#ifdef HAVE_STDINT_H
-# include <stdint.h>
-#endif
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
-
-#ifdef HAVE_SYS_SELECT_H
-# include <sys/select.h>
-#endif
-
-#ifdef RUBY_USE_SETJMPEX
-#include <setjmpex.h>
-#endif
-
-
 #define RUBY
 
+#include <stdlib.h>
 #ifdef __cplusplus
 # ifndef  HAVE_PROTOTYPES
 #  define HAVE_PROTOTYPES 1
@@ -179,13 +49,6 @@ extern "C" {
 #define ANYARGS
 #endif
 
-#ifndef RUBY_SYMBOL_EXPORT_BEGIN
-# define RUBY_SYMBOL_EXPORT_BEGIN /* begin */
-# define RUBY_SYMBOL_EXPORT_END   /* end */
-#endif
-
-RUBY_SYMBOL_EXPORT_BEGIN
-
 #define xmalloc ruby_xmalloc
 #define xmalloc2 ruby_xmalloc2
 #define xcalloc ruby_xcalloc
@@ -193,26 +56,16 @@ RUBY_SYMBOL_EXPORT_BEGIN
 #define xrealloc2 ruby_xrealloc2
 #define xfree ruby_xfree
 
-#if GCC_VERSION_SINCE(4,3,0)
-# define RUBY_ATTR_ALLOC_SIZE(params) __attribute__ ((alloc_size params))
-#else
-# define RUBY_ATTR_ALLOC_SIZE(params)
-#endif
-
-void *xmalloc(size_t) RUBY_ATTR_ALLOC_SIZE((1));
-void *xmalloc2(size_t,size_t) RUBY_ATTR_ALLOC_SIZE((1,2));
-void *xcalloc(size_t,size_t) RUBY_ATTR_ALLOC_SIZE((1,2));
-void *xrealloc(void*,size_t) RUBY_ATTR_ALLOC_SIZE((2));
-void *xrealloc2(void*,size_t,size_t) RUBY_ATTR_ALLOC_SIZE((2,3));
+void *xmalloc(size_t);
+void *xmalloc2(size_t,size_t);
+void *xcalloc(size_t,size_t);
+void *xrealloc(void*,size_t);
+void *xrealloc2(void*,size_t,size_t);
 void xfree(void*);
 
 #define STRINGIZE(expr) STRINGIZE0(expr)
 #ifndef STRINGIZE0
 #define STRINGIZE0(expr) #expr
-#endif
-
-#ifdef HAVE_LONG_LONG
-# define HAVE_TRUE_LONG_LONG 1
 #endif
 
 #if SIZEOF_LONG_LONG > 0
@@ -224,16 +77,49 @@ void xfree(void*);
 # define SIZEOF_LONG_LONG SIZEOF___INT64
 #endif
 
+#if SIZEOF_INT*2 <= SIZEOF_LONG_LONG
+# define BDIGIT unsigned int
+# define SIZEOF_BDIGITS SIZEOF_INT
+# define BDIGIT_DBL unsigned LONG_LONG
+# define BDIGIT_DBL_SIGNED LONG_LONG
+#elif SIZEOF_INT*2 <= SIZEOF_LONG
+# define BDIGIT unsigned int
+# define SIZEOF_BDIGITS SIZEOF_INT
+# define BDIGIT_DBL unsigned long
+# define BDIGIT_DBL_SIGNED long
+#elif SIZEOF_SHORT*2 <= SIZEOF_LONG
+# define BDIGIT unsigned short
+# define SIZEOF_BDIGITS SIZEOF_SHORT
+# define BDIGIT_DBL unsigned long
+# define BDIGIT_DBL_SIGNED long
+#else
+# define BDIGIT unsigned short
+# define SIZEOF_BDIGITS (SIZEOF_LONG/2)
+# define BDIGIT_DBL unsigned long
+# define BDIGIT_DBL_SIGNED long
+#endif
+
+#ifdef INFINITY
+# define HAVE_INFINITY
+#else
+/** @internal */
+extern const unsigned char rb_infinity[];
+# define INFINITY (*(float *)rb_infinity)
+#endif
+
+#ifdef NAN
+# define HAVE_NAN
+#else
+/** @internal */
+extern const unsigned char rb_nan[];
+# define NAN (*(float *)rb_nan)
+#endif
+
 #ifdef __CYGWIN__
 #undef _WIN32
 #endif
 
-#if defined(_WIN32)
-/*
-  DOSISH mean MS-Windows style filesystem.
-  But you should use more precise macros like DOSISH_DRIVE_LETTER, PATH_SEP,
-  ENV_IGNORECASE or CASEFOLD_FILESYSTEM.
- */
+#if defined(_WIN32) || defined(__EMX__)
 #define DOSISH 1
 # define DOSISH_DRIVE_LETTER
 #endif
@@ -245,6 +131,86 @@ void xfree(void*);
 #endif
 #endif
 
+#ifdef __NeXT__
+/* NextStep, OpenStep, Rhapsody */
+#ifndef S_IRUSR
+#define S_IRUSR 0000400        /* read permission, owner */
+#endif
+#ifndef S_IRGRP
+#define S_IRGRP 0000040        /* read permission, group */
+#endif
+#ifndef S_IROTH
+#define S_IROTH 0000004        /* read permission, other */
+#endif
+#ifndef S_IWUSR
+#define S_IWUSR 0000200        /* write permission, owner */
+#endif
+#ifndef S_IWGRP
+#define S_IWGRP 0000020        /* write permission, group */
+#endif
+#ifndef S_IWOTH
+#define S_IWOTH 0000002        /* write permission, other */
+#endif
+#ifndef S_IXUSR
+#define S_IXUSR 0000100        /* execute/search permission, owner */
+#endif
+#ifndef S_IXGRP
+#define S_IXGRP 0000010        /* execute/search permission, group */
+#endif
+#ifndef S_IXOTH
+#define S_IXOTH 0000001        /* execute/search permission, other */
+#endif
+#ifndef S_IRWXU
+#define S_IRWXU 0000700        /* read, write, execute permissions, owner */
+#endif
+#ifndef S_IRWXG
+#define S_IRWXG 0000070        /* read, write, execute permissions, group */
+#endif
+#ifndef S_IRWXO
+#define S_IRWXO 0000007        /* read, write, execute permissions, other */
+#endif
+#ifndef S_ISBLK
+#define S_ISBLK(mode)  (((mode) & (0170000)) == (0060000))
+#endif
+#ifndef S_ISCHR
+#define S_ISCHR(mode)  (((mode) & (0170000)) == (0020000))
+#endif
+#ifndef S_ISDIR
+#define S_ISDIR(mode)  (((mode) & (0170000)) == (0040000))
+#endif
+#ifndef S_ISFIFO
+#define S_ISFIFO(mode) (((mode) & (0170000)) == (0010000))
+#endif
+#ifndef S_ISREG
+#define S_ISREG(mode)  (((mode) & (0170000)) == (0100000))
+#endif
+#ifndef __APPLE__
+/* NextStep, OpenStep (but not Rhapsody) */
+#ifndef GETPGRP_VOID
+#define GETPGRP_VOID 1
+#endif
+#ifndef WNOHANG
+#define WNOHANG 01
+#endif
+#ifndef WUNTRACED
+#define WUNTRACED 02
+#endif
+#ifndef X_OK
+#define X_OK 1
+#endif
+#endif /* __APPLE__ */
+#endif /* NeXT */
+
+#if defined(__BEOS__) && !defined(__HAIKU__) && !defined(BONE)
+#include <net/socket.h> /* intern.h needs fd_set definition */
+#elif defined (__SYMBIAN32__) && defined (HAVE_SYS_SELECT_H)
+# include <sys/select.h>
+#endif
+
+#ifdef __SYMBIAN32__
+# define FALSE 0
+# define TRUE 1
+#endif
 
 #ifdef RUBY_EXPORT
 #undef RUBY_EXTERN
@@ -262,25 +228,12 @@ void xfree(void*);
 
 #endif
 
-#ifndef RUBY_FUNC_EXPORTED
-#define RUBY_FUNC_EXPORTED
-#endif
-
 #ifndef RUBY_EXTERN
 #define RUBY_EXTERN extern
 #endif
 
 #ifndef EXTERN
-# if defined __GNUC__
-#   define EXTERN _Pragma("message \"EXTERN is deprecated, use RUBY_EXTERN instead\""); \
-    RUBY_EXTERN
-# elif defined _MSC_VER
-#   define EXTERN __pragma(message(__FILE__"("STRINGIZE(__LINE__)"): warning: "\
-				   "EXTERN is deprecated, use RUBY_EXTERN instead")); \
-    RUBY_EXTERN
-# else
-#   define EXTERN <-<-"EXTERN is deprecated, use RUBY_EXTERN instead"->->
-# endif
+#define EXTERN RUBY_EXTERN	/* deprecated */
 #endif
 
 #ifndef RUBY_MBCHAR_MAXSIZE
@@ -288,9 +241,22 @@ void xfree(void*);
         /* MB_CUR_MAX will not work well in C locale */
 #endif
 
-#if defined(__sparc)
-void rb_sparc_flush_register_windows(void);
-#  define FLUSH_REGISTER_WINDOWS rb_sparc_flush_register_windows()
+#if defined(sparc) || defined(__sparc__)
+static inline void
+flush_register_windows(void)
+{
+    asm
+#ifdef __GNUC__
+	volatile
+#endif
+# if defined(__sparc_v9__) || defined(__sparcv9) || defined(__arch64__)
+	("flushw")
+# else
+	("ta 0x03")
+# endif /* trap always to flush register windows if we are on a Sparc system */
+	;
+}
+#  define FLUSH_REGISTER_WINDOWS flush_register_windows()
 #elif defined(__ia64)
 void *rb_ia64_bsp(void);
 void rb_ia64_flushrs(void);
@@ -308,7 +274,7 @@ void rb_ia64_flushrs(void);
 
 #define PATH_ENV "PATH"
 
-#if defined(DOSISH)
+#if defined(DOSISH) && !defined(__EMX__)
 #define ENV_IGNORECASE
 #endif
 
@@ -328,47 +294,18 @@ void rb_ia64_flushrs(void);
 #define RUBY_PLATFORM "unknown-unknown"
 #endif
 
-#ifndef FUNC_MINIMIZED
-#define FUNC_MINIMIZED(x) x
-#endif
-#ifndef FUNC_UNOPTIMIZED
-#define FUNC_UNOPTIMIZED(x) x
-#endif
 #ifndef RUBY_ALIAS_FUNCTION_TYPE
 #define RUBY_ALIAS_FUNCTION_TYPE(type, prot, name, args) \
-    FUNC_MINIMIZED(type prot) {return (type)name args;}
+    type prot {return name args;}
 #endif
 #ifndef RUBY_ALIAS_FUNCTION_VOID
 #define RUBY_ALIAS_FUNCTION_VOID(prot, name, args) \
-    FUNC_MINIMIZED(void prot) {name args;}
+    void prot {name args;}
 #endif
 #ifndef RUBY_ALIAS_FUNCTION
 #define RUBY_ALIAS_FUNCTION(prot, name, args) \
     RUBY_ALIAS_FUNCTION_TYPE(VALUE, prot, name, args)
 #endif
-
-#ifndef UNALIGNED_WORD_ACCESS
-# if defined(__i386) || defined(__i386__) || defined(_M_IX86) || \
-     defined(__x86_64) || defined(__x86_64__) || defined(_M_AMD64) || \
-     defined(__powerpc64__) || \
-     defined(__mc68020__)
-#   define UNALIGNED_WORD_ACCESS 1
-# else
-#   define UNALIGNED_WORD_ACCESS 0
-# endif
-#endif
-#ifndef PACKED_STRUCT
-# define PACKED_STRUCT(x) x
-#endif
-#ifndef PACKED_STRUCT_UNALIGNED
-# if UNALIGNED_WORD_ACCESS
-#   define PACKED_STRUCT_UNALIGNED(x) PACKED_STRUCT(x)
-# else
-#   define PACKED_STRUCT_UNALIGNED(x) x
-# endif
-#endif
-
-RUBY_SYMBOL_EXPORT_END
 
 #if defined(__cplusplus)
 #if 0

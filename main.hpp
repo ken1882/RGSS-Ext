@@ -23,7 +23,6 @@
     #define DLL_EXPORT __declspec(dllimport)
 #endif
 
-typedef VALUE(*VALUE_P)();
 typedef VALUE(*rgss_obj_ivar_get_proto)(VALUE, VALUE);
 typedef VALUE(*rgss_obj_ivar_set_proto)(VALUE, VALUE, VALUE);
 typedef VALUE(*rgss_ary_at_proto)(VALUE, VALUE);

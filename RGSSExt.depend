@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1553000789 source:f:\rmva\rgssext\main.cpp
+1553099043 source:f:\rmva\rgssext\main.cpp
 	"main.hpp"
 	<fstream>
 
@@ -15,16 +15,23 @@
 	<stack>
 	<string>
 
-1552971628 f:\rmva\rgssext\ruby.h
+1553099607 f:\rmva\rgssext\ruby.h
 	"config.h"
-	"defines.h"
+	<stdlib.h>
+	<string.h>
+	<strings.h>
 	<intrinsics.h>
+	<stdint.h>
+	<inttypes.h>
 	<stdarg.h>
+	<stddef.h>
+	<stdio.h>
+	"defines.h"
 	<alloca.h>
 	<limits.h>
 	<limits.h>
 
-1552999331 f:\rmva\rgssext\main.hpp
+1553100633 f:\rmva\rgssext\main.hpp
 	<windows.h>
 	"ruby.h"
 	<iostream>
@@ -36,21 +43,10 @@
 	<stack>
 	<string>
 
-1552971424 f:\rmva\rgssext\defines.h
-	<stdio.h>
-	<sys/types.h>
-	<sys/stat.h>
+1553099933 f:\rmva\rgssext\defines.h
 	<stdlib.h>
-	<stddef.h>
-	<stdlib.h>
-	<memory.h>
-	<string.h>
-	<strings.h>
-	<inttypes.h>
-	<stdint.h>
-	<unistd.h>
+	<net/socket.h>
 	<sys/select.h>
-	<setjmpex.h>
 
-1552971643 f:\rmva\rgssext\config.h
+1553099879 f:\rmva\rgssext\config.h
 

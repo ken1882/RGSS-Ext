@@ -7,8 +7,7 @@ int abs_i(int n) {
 
 VALUE load_int(VALUE obj, char* name){
     int re = rgss_obj_ivar_get(obj, rgss_ascii_new_cstr(name));
-    if(re > 0){return re >> 1;}
-    return re;
+    return re >> 1;
 }
 
 VALUE load_obj(VALUE obj, char* name){
@@ -25,7 +24,7 @@ DWORD DLL_EXPORT InitOK() {
 
 VALUE DLL_EXPORT HelloWorld() {
 	if (!init_ok) { return -1; }
-	return rgss_ascii_new_cstr("Hello World from RGSS-Extenstion!");
+	return rgss_ascii_new_cstr("Hello World from RGSS-Extension!");
 }
 
 VALUE DLL_EXPORT GetInstance(VALUE obj, VALUE iv) {

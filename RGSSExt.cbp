@@ -40,8 +40,11 @@
 				</Linker>
 			</Target>
 		</Build>
+		<Unit filename="config.h" />
+		<Unit filename="defines.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="main.h" />
+		<Unit filename="main.hpp" />
+		<Unit filename="ruby.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
